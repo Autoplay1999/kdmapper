@@ -1,4 +1,5 @@
 #include "intel_driver.hpp"
+#include "intel_driver_resource.hpp"
 #include "framework.h"
 
 char intel_driver::driver_name[100] = {};

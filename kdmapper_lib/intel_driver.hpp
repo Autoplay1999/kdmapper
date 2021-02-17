@@ -5,7 +5,6 @@
 #include <filesystem>
 #include <atlstr.h>
 
-#include "intel_driver_resource.hpp"
 #include "service.hpp"
 #include "utils.hpp"
 #include <assert.h>

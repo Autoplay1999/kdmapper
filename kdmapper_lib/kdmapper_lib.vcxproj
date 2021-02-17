@@ -111,8 +111,12 @@
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(SolutionDir)include\$(TargetName)" md "$(SolutionDir)include\$(TargetName)"
-copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.h" 
-copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" </Command>
+copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.hpp" 
+copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" 
+copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\$(TargetName)\portable_executable.hpp" 
+copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\$(TargetName)\utils.hpp" 
+copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\$(TargetName)\nt.hpp" 
+copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.hpp" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,8 +140,12 @@ copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmappe
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(SolutionDir)include\$(TargetName)" md "$(SolutionDir)include\$(TargetName)"
-copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.h" 
-copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" </Command>
+copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.hpp" 
+copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" 
+copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\$(TargetName)\portable_executable.hpp" 
+copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\$(TargetName)\utils.hpp" 
+copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\$(TargetName)\nt.hpp" 
+copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.hpp" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -157,8 +165,12 @@ copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmappe
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(SolutionDir)include\$(TargetName)" md "$(SolutionDir)include\$(TargetName)"
-copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.h" 
-copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" </Command>
+copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.hpp" 
+copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" 
+copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\$(TargetName)\portable_executable.hpp" 
+copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\$(TargetName)\utils.hpp" 
+copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\$(TargetName)\nt.hpp" 
+copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.hpp" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -182,8 +194,12 @@ copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmappe
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(SolutionDir)include\$(TargetName)" md "$(SolutionDir)include\$(TargetName)"
-copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.h" 
-copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" </Command>
+copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.hpp" 
+copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" 
+copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\$(TargetName)\portable_executable.hpp" 
+copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\$(TargetName)\utils.hpp" 
+copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\$(TargetName)\nt.hpp" 
+copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.hpp" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
