@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 #include <filesystem>
-#include <atlstr.h>
 
 #include "service.hpp"
 #include "utils.hpp"
@@ -154,14 +153,14 @@ namespace intel_driver
 		// Setup function call
 		HMODULE ntdll = GetModuleHandle("ntdll.dll");
 		if (ntdll == 0) {
-			TRACE("[-] Failed to load ntdll.dll"); //never should happens
+			//TRACE("[-] Failed to load ntdll.dll"); //never should happens
 			return false;
 		}
 
 		const auto NtQueryInformationAtom = reinterpret_cast<void*>(GetProcAddress(ntdll, "NtQueryInformationAtom"));
 		if (!NtQueryInformationAtom)
 		{
-			TRACE("[-] Failed to get export ntdll.NtQueryInformationAtom");
+			//TRACE("[-] Failed to get export ntdll.NtQueryInformationAtom");
 			return false;
 		}
 
@@ -172,7 +171,7 @@ namespace intel_driver
 		const uint64_t kernel_NtQueryInformationAtom = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress("ntoskrnl.exe"), "NtQueryInformationAtom");
 		if (!kernel_NtQueryInformationAtom)
 		{
-			TRACE("[-] Failed to get export ntoskrnl.NtQueryInformationAtom");
+			//TRACE("[-] Failed to get export ntoskrnl.NtQueryInformationAtom");
 			return false;
 		}
 			
