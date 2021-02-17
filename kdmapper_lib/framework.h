@@ -6,18 +6,18 @@
 #include <memory>
 #include <array>
 
-static void trace(const wchar_t* fmt, ...) {
-	static std::unique_ptr<std::array<wchar_t, 0x1000>> buf;
+static void trace(const char* fmt, ...) {
+	static std::unique_ptr<std::array<char, 0x1000>> buf;
 
 	if (!buf)
-		buf = std::make_unique<std::array<wchar_t, 0x1000>>();
+		buf = std::make_unique<std::array<char, 0x1000>>();
 
 	va_list arg;
 	va_start(arg, fmt);
-	vswprintf(buf->data(), fmt, arg);
+	vsprintf(buf->data(), fmt, arg);
 	va_end(arg);
 
-	OutputDebugStringW(buf->data());
+	OutputDebugStringA(buf->data());
 }
 
 #ifdef _DEBUG

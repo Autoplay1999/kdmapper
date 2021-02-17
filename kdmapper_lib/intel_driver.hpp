@@ -9,6 +9,7 @@
 #include "service.hpp"
 #include "utils.hpp"
 #include <assert.h>
+#include "framework.h"
 
 namespace intel_driver
 {
@@ -154,14 +155,14 @@ namespace intel_driver
 		// Setup function call
 		HMODULE ntdll = GetModuleHandle("ntdll.dll");
 		if (ntdll == 0) {
-			std::cout << "[-] Failed to load ntdll.dll" << std::endl; //never should happens
+			TRACE("[-] Failed to load ntdll.dll"); //never should happens
 			return false;
 		}
 
 		const auto NtQueryInformationAtom = reinterpret_cast<void*>(GetProcAddress(ntdll, "NtQueryInformationAtom"));
 		if (!NtQueryInformationAtom)
 		{
-			std::cout << "[-] Failed to get export ntdll.NtQueryInformationAtom" << std::endl;
+			TRACE("[-] Failed to get export ntdll.NtQueryInformationAtom");
 			return false;
 		}
 
@@ -172,7 +173,7 @@ namespace intel_driver
 		const uint64_t kernel_NtQueryInformationAtom = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress("ntoskrnl.exe"), "NtQueryInformationAtom");
 		if (!kernel_NtQueryInformationAtom)
 		{
-			std::cout << "[-] Failed to get export ntoskrnl.NtQueryInformationAtom" << std::endl;
+			TRACE("[-] Failed to get export ntoskrnl.NtQueryInformationAtom");
 			return false;
 		}
 			

@@ -1,5 +1,5 @@
 #include "service.hpp"
-
+#include "framework.h"
 
 
 bool service::RegisterAndStart(const std::string& driver_path)
@@ -13,7 +13,7 @@ bool service::RegisterAndStart(const std::string& driver_path)
 	LSTATUS status = RegCreateKey(HKEY_LOCAL_MACHINE, servicesPath.c_str(), &dservice); //Returns Ok if already exists
 	if (status != ERROR_SUCCESS)
 	{
-		printf("[-] Can't create service key\n");
+		TRACE("[-] Can't create service key\n");
 		return false;
 	}
 
@@ -21,7 +21,7 @@ bool service::RegisterAndStart(const std::string& driver_path)
 	if (status != ERROR_SUCCESS)
 	{
 		RegCloseKey(dservice);
-		printf("[-] Can't create 'ImagePath' registry value\n");
+		TRACE("[-] Can't create 'ImagePath' registry value\n");
 		return false;
 	}
 	
@@ -29,7 +29,7 @@ bool service::RegisterAndStart(const std::string& driver_path)
 	if (status != ERROR_SUCCESS)
 	{
 		RegCloseKey(dservice);
-		printf("[-] Can't create 'Type' registry value\n");
+		TRACE("[-] Can't create 'Type' registry value\n");
 		return false;
 	}
 	
@@ -48,7 +48,7 @@ bool service::RegisterAndStart(const std::string& driver_path)
 	NTSTATUS Status = RtlAdjustPrivilege(SE_LOAD_DRIVER_PRIVILEGE, TRUE, FALSE, &SeLoadDriverWasEnabled);
 	if (!NT_SUCCESS(Status))
 	{
-		printf("Fatal error: failed to acquire SE_LOAD_DRIVER_PRIVILEGE. Make sure you are running as administrator.\n");
+		TRACE("Fatal error: failed to acquire SE_LOAD_DRIVER_PRIVILEGE. Make sure you are running as administrator.\n");
 		return false;
 	}
 
@@ -58,7 +58,7 @@ bool service::RegisterAndStart(const std::string& driver_path)
 	RtlInitUnicodeString(&serviceStr, wdriver_name.c_str());
 	
 	Status = NtLoadDriver(&serviceStr);
-	printf("[+] NtLoadDriver Status 0x%lx\n", Status);
+	TRACE("[+] NtLoadDriver Status 0x%lx\n", Status);
 	return NT_SUCCESS(Status);
 }
 
@@ -87,9 +87,9 @@ bool service::StopAndRemove(const std::string& driver_name)
 
 	auto NtUnloadDriver = (nt::NtUnloadDriver)GetProcAddress(ntdll, "NtUnloadDriver");
 	NTSTATUS st = NtUnloadDriver(&serviceStr);
-	printf("[+] NtUnloadDriver Status 0x%lx\n", st);
+	TRACE("[+] NtUnloadDriver Status 0x%lx\n", st);
 	if (st != 0x0) {
-		printf("[-] Driver Unload Failed!!\n");
+		TRACE("[-] Driver Unload Failed!!\n");
 	}
 	
 
