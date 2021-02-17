@@ -5,16 +5,30 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kdmapper", "kdmapper\kdmapper.vcxproj", "{518E0636-BA8F-459D-ACAC-81BD33475E3E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kdmapper_lib", "kdmapper_lib\kdmapper_lib.vcxproj", "{10A3CDB5-A7DA-4169-9CC0-1E1CB2455B30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{518E0636-BA8F-459D-ACAC-81BD33475E3E}.Debug|x64.ActiveCfg = Debug|x64
 		{518E0636-BA8F-459D-ACAC-81BD33475E3E}.Debug|x64.Build.0 = Debug|x64
+		{518E0636-BA8F-459D-ACAC-81BD33475E3E}.Debug|x86.ActiveCfg = Debug|x64
 		{518E0636-BA8F-459D-ACAC-81BD33475E3E}.Release|x64.ActiveCfg = Release|x64
 		{518E0636-BA8F-459D-ACAC-81BD33475E3E}.Release|x64.Build.0 = Release|x64
+		{518E0636-BA8F-459D-ACAC-81BD33475E3E}.Release|x86.ActiveCfg = Release|x64
+		{10A3CDB5-A7DA-4169-9CC0-1E1CB2455B30}.Debug|x64.ActiveCfg = Debug|x64
+		{10A3CDB5-A7DA-4169-9CC0-1E1CB2455B30}.Debug|x64.Build.0 = Debug|x64
+		{10A3CDB5-A7DA-4169-9CC0-1E1CB2455B30}.Debug|x86.ActiveCfg = Debug|Win32
+		{10A3CDB5-A7DA-4169-9CC0-1E1CB2455B30}.Debug|x86.Build.0 = Debug|Win32
+		{10A3CDB5-A7DA-4169-9CC0-1E1CB2455B30}.Release|x64.ActiveCfg = Release|x64
+		{10A3CDB5-A7DA-4169-9CC0-1E1CB2455B30}.Release|x64.Build.0 = Release|x64
+		{10A3CDB5-A7DA-4169-9CC0-1E1CB2455B30}.Release|x86.ActiveCfg = Release|Win32
+		{10A3CDB5-A7DA-4169-9CC0-1E1CB2455B30}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
