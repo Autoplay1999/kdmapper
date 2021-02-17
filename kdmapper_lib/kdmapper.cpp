@@ -1,17 +1,17 @@
 #include "kdmapper.hpp"
 #include "framework.h"
 
-uint64_t kdmapper::MapDriver(HANDLE iqvw64e_device_handle, const std::string& driver_path)
+uint64_t kdmapper::MapDriver(HANDLE iqvw64e_device_handle, PBYTE driver_image)
 {
-	std::vector<uint8_t> raw_image = { 0 };
+	/*std::vector<uint8_t> raw_image = { 0 };
 
 	if (!utils::ReadFileToMemory(driver_path, &raw_image))
 	{
 		TRACE("[-] Failed to read image to memory");
 		return 0;
-	}
+	}*/
 
-	const PIMAGE_NT_HEADERS64 nt_headers = portable_executable::GetNtHeaders(raw_image.data());
+	const PIMAGE_NT_HEADERS64 nt_headers = portable_executable::GetNtHeaders(driver_image);
 
 	if (!nt_headers)
 	{
@@ -47,7 +47,7 @@ uint64_t kdmapper::MapDriver(HANDLE iqvw64e_device_handle, const std::string& dr
 
 		// Copy image headers
 
-		memcpy(local_image_base, raw_image.data(), nt_headers->OptionalHeader.SizeOfHeaders);
+		memcpy(local_image_base, driver_image, nt_headers->OptionalHeader.SizeOfHeaders);
 
 		// Copy image sections
 
@@ -56,7 +56,7 @@ uint64_t kdmapper::MapDriver(HANDLE iqvw64e_device_handle, const std::string& dr
 		for (auto i = 0; i < nt_headers->FileHeader.NumberOfSections; ++i)
 		{
 			auto local_section = reinterpret_cast<void*>(reinterpret_cast<uint64_t>(local_image_base) + current_image_section[i].VirtualAddress);
-			memcpy(local_section, reinterpret_cast<void*>(reinterpret_cast<uint64_t>(raw_image.data()) + current_image_section[i].PointerToRawData), current_image_section[i].SizeOfRawData);
+			memcpy(local_section, reinterpret_cast<void*>(reinterpret_cast<uint64_t>(driver_image) + current_image_section[i].PointerToRawData), current_image_section[i].SizeOfRawData);
 		}
 		
 		uint64_t realBase = kernel_image_base;
