@@ -8,7 +8,7 @@ uintptr_t PiDDBCacheTablePtr;
 
 bool intel_driver::IsRunning()
 {
-	const HANDLE file_handle = CreateFileW(L"\\\\.\\Nal", FILE_ANY_ACCESS, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	const HANDLE file_handle = CreateFileA(HIDETXT("\\\\.\\Nal"), FILE_ANY_ACCESS, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (file_handle != nullptr && file_handle != INVALID_HANDLE_VALUE)
 	{
 		CloseHandle(file_handle);
@@ -56,7 +56,7 @@ HANDLE intel_driver::Load()
 		return nullptr;
 	}
 
-	return CreateFileW(L"\\\\.\\Nal", GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	return CreateFileA(HIDETXT("\\\\.\\Nal"), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 }
 
 void intel_driver::Unload(HANDLE device_handle)
@@ -202,7 +202,7 @@ bool intel_driver::WriteToReadOnlyMemory(HANDLE device_handle, uint64_t address,
 
 	if (!GetPhysicalAddress(device_handle, address, &physical_address))
 	{
-		std::cout << "[-] Failed to translate virtual address 0x" << reinterpret_cast<void*>(address) << std::endl;
+		TRACE("[-] Failed to translate virtual address 0x", reinterpret_cast<void*>(address));
 		return false;
 	}
 
@@ -210,14 +210,14 @@ bool intel_driver::WriteToReadOnlyMemory(HANDLE device_handle, uint64_t address,
 
 	if (!mapped_physical_memory)
 	{
-		std::cout << "[-] Failed to map IO space of 0x" << reinterpret_cast<void*>(physical_address) << std::endl;
+		TRACE("[-] Failed to map IO space of 0x", reinterpret_cast<void*>(physical_address));
 		return false;
 	}
 
 	bool result = WriteMemory(device_handle, mapped_physical_memory, buffer, size);
 
 	if (!UnmapIoSpace(device_handle, mapped_physical_memory, size))
-		std::cout << "[!] Failed to unmap IO space of physical address 0x" << reinterpret_cast<void*>(physical_address) << std::endl;
+		TRACE("[!] Failed to unmap IO space of physical address 0x", reinterpret_cast<void*>(physical_address));
 
 	return result;
 }
@@ -227,7 +227,7 @@ uint64_t intel_driver::AllocatePool(HANDLE device_handle, nt::POOL_TYPE pool_typ
 	if (!size)
 		return 0;
 
-	static uint64_t kernel_ExAllocatePool = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress("ntoskrnl.exe"), "ExAllocatePoolWithTag");
+	static uint64_t kernel_ExAllocatePool = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress(HIDETXT("ntoskrnl.exe")), HIDETXT("ExAllocatePoolWithTag"));
 
 	if (!kernel_ExAllocatePool)
 	{
@@ -248,7 +248,7 @@ bool intel_driver::FreePool(HANDLE device_handle, uint64_t address)
 	if (!address)
 		return 0;
 
-	static uint64_t kernel_ExFreePool = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress("ntoskrnl.exe"), "ExFreePool");
+	static uint64_t kernel_ExFreePool = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress(HIDETXT("ntoskrnl.exe")), HIDETXT("ExFreePool"));
 
 	if (!kernel_ExFreePool) {
 		TRACE("[!] Failed to find ExAllocatePool");
@@ -399,7 +399,7 @@ bool intel_driver::ClearMmUnloadedDrivers(HANDLE device_handle)
 		return false;
 	}
 
-	std::wcout << L"[+] MmUnloadedDrivers Cleaned: " << unloadedName << std::endl;
+	TRACE("[+] MmUnloadedDrivers Cleaned: %ws", unloadedName);
 
 	delete[] unloadedName;
 
@@ -421,7 +421,7 @@ bool intel_driver::ExAcquireResourceExclusiveLite(HANDLE device_handle, PVOID Re
 	if (!Resource)
 		return 0;
 
-	static uint64_t kernel_ExAcquireResourceExclusiveLite = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress("ntoskrnl.exe"), "ExAcquireResourceExclusiveLite");
+	static uint64_t kernel_ExAcquireResourceExclusiveLite = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress(HIDETXT("ntoskrnl.exe")), HIDETXT("ExAcquireResourceExclusiveLite"));
 
 	if (!kernel_ExAcquireResourceExclusiveLite) {
 		TRACE("[!] Failed to find ExAcquireResourceExclusiveLite");
@@ -438,7 +438,7 @@ bool intel_driver::ExReleaseResourceLite(HANDLE device_handle, PVOID Resource)
 	if (!Resource)
 		return false;
 
-	static uint64_t kernel_ExReleaseResourceLite = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress("ntoskrnl.exe"), "ExReleaseResourceLite");
+	static uint64_t kernel_ExReleaseResourceLite = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress(HIDETXT("ntoskrnl.exe")), HIDETXT("ExReleaseResourceLite"));
 
 	if (!kernel_ExReleaseResourceLite) {
 		TRACE("[!] Failed to find ExReleaseResourceLite");
@@ -453,7 +453,7 @@ BOOLEAN intel_driver::RtlDeleteElementGenericTableAvl(HANDLE device_handle, PVOI
 	if (!Table)
 		return false;
 
-	static uint64_t kernel_RtlDeleteElementGenericTableAvl = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress("ntoskrnl.exe"), "RtlDeleteElementGenericTableAvl");
+	static uint64_t kernel_RtlDeleteElementGenericTableAvl = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress(HIDETXT("ntoskrnl.exe")), HIDETXT("RtlDeleteElementGenericTableAvl"));
 
 	if (!kernel_RtlDeleteElementGenericTableAvl) {
 		TRACE("[!] Failed to find RtlDeleteElementGenericTableAvl");
@@ -484,7 +484,7 @@ intel_driver::PiDDBCacheEntry* intel_driver::LookupEntry(HANDLE device_handle, P
 			return nullptr;
 		}
 		if (itemTimeDateStamp == timestamp) {
-			printf("[+] PiDDBCacheTable result -> TimeStamp: %x\n", itemTimeDateStamp);
+			TRACE("[+] PiDDBCacheTable result -> TimeStamp: %x", itemTimeDateStamp);
 			return cache_entry;
 		}
 		if ((uintptr_t)cache_entry == (uintptr_t)firstEntry) {
@@ -500,17 +500,17 @@ intel_driver::PiDDBCacheEntry* intel_driver::LookupEntry(HANDLE device_handle, P
 
 bool intel_driver::ClearPiDDBCacheTable(HANDLE device_handle) { //PiDDBCacheTable added on LoadDriver
 	
-	uint64_t ntoskrnl = utils::GetKernelModuleAddress("ntoskrnl.exe");
+	uint64_t ntoskrnl = utils::GetKernelModuleAddress(HIDETXT("ntoskrnl.exe"));
 
-	PiDDBLockPtr = FindPatternInSectionAtKernel(device_handle, (char*)"PAGE", ntoskrnl, (PUCHAR)"\x81\xFB\x6C\x03\x00\xC0\x0F\x84\x00\x00\x00\x00\x48\x8D\x0D", (char*)"xxxxxxxx????xxx"); // 81 FB 6C 03 00 C0 0F 84 ? ? ? ? 48 8D 0D  update for build 21286 etc...
-	PiDDBCacheTablePtr = FindPatternInSectionAtKernel(device_handle, (char*)"PAGE", ntoskrnl, (PUCHAR)"\x66\x03\xD2\x48\x8D\x0D", (char*)"xxxxxx");
+	PiDDBLockPtr = FindPatternInSectionAtKernel(device_handle, (char*)HIDETXT("PAGE"), ntoskrnl, (PUCHAR)"\x81\xFB\x6C\x03\x00\xC0\x0F\x84\x00\x00\x00\x00\x48\x8D\x0D", (char*)HIDETXT("xxxxxxxx????xxx")); // 81 FB 6C 03 00 C0 0F 84 ? ? ? ? 48 8D 0D  update for build 21286 etc...
+	PiDDBCacheTablePtr = FindPatternInSectionAtKernel(device_handle, (char*)HIDETXT("PAGE"), ntoskrnl, (PUCHAR)"\x66\x03\xD2\x48\x8D\x0D", (char*)HIDETXT("xxxxxx"));
 	if (PiDDBLockPtr == NULL || PiDDBCacheTablePtr == NULL) {
 		TRACE("[-] Warning no PiDDBCacheTable Found");
 		return false;
 	}
 
-	printf("[+] PiDDBLock Ptr %llx\n", PiDDBLockPtr);
-	printf("[+] PiDDBCacheTable Ptr %llx\n", PiDDBCacheTablePtr);
+	TRACE("[+] PiDDBLock Ptr %llx", PiDDBLockPtr);
+	TRACE("[+] PiDDBCacheTable Ptr %llx", PiDDBCacheTablePtr);
 
 	PVOID PiDDBLock = ResolveRelativeAddress(device_handle, (PVOID)PiDDBLockPtr, 15, 19);
 	PRTL_AVL_TABLE PiDDBCacheTable = (PRTL_AVL_TABLE)ResolveRelativeAddress(device_handle, (PVOID)PiDDBCacheTablePtr, 6, 10);
@@ -629,15 +629,15 @@ bool intel_driver::ClearKernelHashBucketList(HANDLE device_handle) {
 	std::string dname(driver_name);
 	std::wstring wdname(dname.begin(),dname.end());
 	wdname = L"\\" + wdname;
-	uint64_t ci = utils::GetKernelModuleAddress("ci.dll");
+	uint64_t ci = utils::GetKernelModuleAddress(HIDETXT("ci.dll"));
 
 	//Thanks @KDIo3 and @Swiftik from UnknownCheats
-	auto sig = FindPatternInSectionAtKernel(device_handle, (char*)"PAGE",ci, PUCHAR("\x48\x8B\x1D\x00\x00\x00\x00\xEB\x00\xF7\x43\x40\x00\x20\x00\x00"), (char*)"xxx????x?xxxxxxx");
+	auto sig = FindPatternInSectionAtKernel(device_handle, (char*)HIDETXT("PAGE"),ci, PUCHAR("\x48\x8B\x1D\x00\x00\x00\x00\xEB\x00\xF7\x43\x40\x00\x20\x00\x00"), (char*)HIDETXT("xxx????x?xxxxxxx"));
 	if (!sig) {
 		TRACE("[-] Can't Find g_KernelHashBucketList");
 		return false;
 	}
-	auto sig2 = FindPatternAtKernel(device_handle,(uintptr_t)sig-50, 50, PUCHAR("\x48\x8D\x0D"), (char*)"xxx");
+	auto sig2 = FindPatternAtKernel(device_handle,(uintptr_t)sig-50, 50, PUCHAR("\x48\x8D\x0D"), (char*)HIDETXT("xxx"));
 	if (!sig2) {
 		TRACE("[-] Can't Find g_HashCacheLock");
 		return false;
@@ -682,7 +682,7 @@ bool intel_driver::ClearKernelHashBucketList(HANDLE device_handle) {
 		ReadMemory(device_handle, (uintptr_t)wsNamePtr, wsName, wsNameLen * sizeof(wchar_t));
 				
 		if (std::wstring(wsName).find(wdname) != std::wstring::npos) {
-			std::wcout << L"[+] Found In g_KernelHashBucketList: " << wsName << std::endl;
+			TRACE("[+] Found In g_KernelHashBucketList: %ws", wsName);
 
 			HashBucketEntry* Next = 0;
 			ReadMemory(device_handle, (uintptr_t)entry, &Next, sizeof(Next));
@@ -690,7 +690,7 @@ bool intel_driver::ClearKernelHashBucketList(HANDLE device_handle) {
 			WriteMemory(device_handle, (uintptr_t)prev, &Next, sizeof(Next));
 
 			FreePool(device_handle, (uintptr_t)entry);
-			std::wcout << L"[+] g_KernelHashBucketList Cleaned" << std::endl;
+			TRACE("[+] g_KernelHashBucketList Cleaned");
 			ExReleaseResourceLite(device_handle, g_HashCacheLock);
 			delete[] wsName;
 			return true;

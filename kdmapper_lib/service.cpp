@@ -1,13 +1,13 @@
 #include "service.hpp"
 #include "framework.h"
 
-
 bool service::RegisterAndStart(const std::string& driver_path)
 {
 	const static DWORD ServiceTypeKernel = 1;
+
 	const std::string driver_name = std::filesystem::path(driver_path).filename().string();
-	const std::string servicesPath = "SYSTEM\\CurrentControlSet\\Services\\" + driver_name;
-	const std::string nPath = "\\??\\" + driver_path;
+	const std::string servicesPath = HIDETXT("SYSTEM\\CurrentControlSet\\Services\\") + driver_name;
+	const std::string nPath = HIDETXT("\\??\\") + driver_path;
 
 	HKEY dservice;
 	LSTATUS status = RegCreateKey(HKEY_LOCAL_MACHINE, servicesPath.c_str(), &dservice); //Returns Ok if already exists
@@ -17,7 +17,7 @@ bool service::RegisterAndStart(const std::string& driver_path)
 		return false;
 	}
 
-	status = RegSetKeyValue(dservice, NULL, "ImagePath", REG_EXPAND_SZ, nPath.c_str(), (DWORD)nPath.size());
+	status = RegSetKeyValueA(dservice, NULL, HIDETXT("ImagePath"), REG_EXPAND_SZ, nPath.c_str(), (DWORD)nPath.size());
 	if (status != ERROR_SUCCESS)
 	{
 		RegCloseKey(dservice);
@@ -25,7 +25,7 @@ bool service::RegisterAndStart(const std::string& driver_path)
 		return false;
 	}
 	
-	status = RegSetKeyValue(dservice, NULL, "Type", REG_DWORD, &ServiceTypeKernel, sizeof(DWORD));
+	status = RegSetKeyValueA(dservice, NULL, HIDETXT("Type"), REG_DWORD, &ServiceTypeKernel, sizeof(DWORD));
 	if (status != ERROR_SUCCESS)
 	{
 		RegCloseKey(dservice);
@@ -35,13 +35,13 @@ bool service::RegisterAndStart(const std::string& driver_path)
 	
 	RegCloseKey(dservice);
 
-	HMODULE ntdll = GetModuleHandle("ntdll.dll");
+	HMODULE ntdll = GetModuleHandleA(HIDETXT("ntdll.dll"));
 	if (ntdll == NULL) {
 		return false;
 	}
 
-	auto RtlAdjustPrivilege = (nt::RtlAdjustPrivilege)GetProcAddress(ntdll, "RtlAdjustPrivilege");
-	auto NtLoadDriver = (nt::NtLoadDriver)GetProcAddress(ntdll, "NtLoadDriver");
+	auto RtlAdjustPrivilege = (nt::RtlAdjustPrivilege)GetProcAddress(ntdll, HIDETXT("RtlAdjustPrivilege"));
+	auto NtLoadDriver = (nt::NtLoadDriver)GetProcAddress(ntdll, HIDETXT("NtLoadDriver"));
 
 	ULONG SE_LOAD_DRIVER_PRIVILEGE = 10UL;
 	BOOLEAN SeLoadDriverWasEnabled;
@@ -53,7 +53,9 @@ bool service::RegisterAndStart(const std::string& driver_path)
 	}
 
 	std::wstring wdriver_name(driver_name.begin(), driver_name.end());
-	wdriver_name = L"\\Registry\\Machine\\System\\CurrentControlSet\\Services\\" + wdriver_name;
+	std::string servicePathA = HIDETXT("\\Registry\\Machine\\System\\CurrentControlSet\\Services\\");
+	std::wstring servicePathW(servicePathA.begin(), servicePathA.end());
+	wdriver_name = servicePathW + wdriver_name;
 	UNICODE_STRING serviceStr;
 	RtlInitUnicodeString(&serviceStr, wdriver_name.c_str());
 	
@@ -69,12 +71,14 @@ bool service::StopAndRemove(const std::string& driver_name)
 		return false;
 
 	std::wstring wdriver_name(driver_name.begin(), driver_name.end());
-	wdriver_name = L"\\Registry\\Machine\\System\\CurrentControlSet\\Services\\" + wdriver_name;
+	std::string servicePathA = HIDETXT("\\Registry\\Machine\\System\\CurrentControlSet\\Services\\");
+	std::wstring servicePathW(servicePathA.begin(), servicePathA.end());
+	wdriver_name = servicePathW + wdriver_name;
 	UNICODE_STRING serviceStr;
 	RtlInitUnicodeString(&serviceStr, wdriver_name.c_str());
 
 	HKEY driver_service;
-	std::string servicesPath = "SYSTEM\\CurrentControlSet\\Services\\" + driver_name;
+	std::string servicesPath = HIDETXT("SYSTEM\\CurrentControlSet\\Services\\") + driver_name;
 	LSTATUS status = RegOpenKey(HKEY_LOCAL_MACHINE, servicesPath.c_str(), &driver_service);
 	if (status != ERROR_SUCCESS)
 	{
@@ -85,7 +89,7 @@ bool service::StopAndRemove(const std::string& driver_name)
 	}
 	RegCloseKey(driver_service);
 
-	auto NtUnloadDriver = (nt::NtUnloadDriver)GetProcAddress(ntdll, "NtUnloadDriver");
+	auto NtUnloadDriver = (nt::NtUnloadDriver)GetProcAddress(ntdll, HIDETXT("NtUnloadDriver"));
 	NTSTATUS st = NtUnloadDriver(&serviceStr);
 	TRACE("[+] NtUnloadDriver Status 0x%lx\n", st);
 	if (st != 0x0) {

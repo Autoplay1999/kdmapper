@@ -43,7 +43,7 @@ uint64_t kdmapper::MapDriver(HANDLE iqvw64e_device_handle, PBYTE driver_image)
 			break;
 		}
 
-		std::cout << "[+] Image base has been allocated at 0x" << reinterpret_cast<void*>(kernel_image_base) << std::endl;
+		TRACE("[+] Image base has been allocated at 0x", reinterpret_cast<void*>(kernel_image_base));
 
 		// Copy image headers
 
@@ -88,7 +88,7 @@ uint64_t kdmapper::MapDriver(HANDLE iqvw64e_device_handle, PBYTE driver_image)
 
 		const uint64_t address_of_entry_point = kernel_image_base + nt_headers->OptionalHeader.AddressOfEntryPoint;
 
-		std::cout << "[<] Calling DriverEntry 0x" << reinterpret_cast<void*>(address_of_entry_point) << std::endl;
+		TRACE("[<] Calling DriverEntry 0x", reinterpret_cast<void*>(address_of_entry_point));
 
 		NTSTATUS status = 0;
 
@@ -99,7 +99,7 @@ uint64_t kdmapper::MapDriver(HANDLE iqvw64e_device_handle, PBYTE driver_image)
 			break;
 		}
 
-		std::cout << "[+] DriverEntry returned 0x" << std::hex << std::setw(8) << std::setfill('0') << std::uppercase << status << std::nouppercase << std::dec << std::endl;
+		TRACE("[+] DriverEntry returned 0x", status);
 		
 		VirtualFree(local_image_base, 0, MEM_RELEASE);
 		return realBase;

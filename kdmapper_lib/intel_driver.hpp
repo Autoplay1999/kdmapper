@@ -151,13 +151,13 @@ namespace intel_driver
 			return false;
 
 		// Setup function call
-		HMODULE ntdll = GetModuleHandle("ntdll.dll");
+		HMODULE ntdll = GetModuleHandleA(HIDETXT("ntdll.dll"));
 		if (ntdll == 0) {
 			//TRACE("[-] Failed to load ntdll.dll"); //never should happens
 			return false;
 		}
 
-		const auto NtQueryInformationAtom = reinterpret_cast<void*>(GetProcAddress(ntdll, "NtQueryInformationAtom"));
+		const auto NtQueryInformationAtom = reinterpret_cast<void*>(GetProcAddress(ntdll, HIDETXT("NtQueryInformationAtom")));
 		if (!NtQueryInformationAtom)
 		{
 			//TRACE("[-] Failed to get export ntdll.NtQueryInformationAtom");
@@ -168,7 +168,7 @@ namespace intel_driver
 		uint8_t original_kernel_function[sizeof(kernel_injected_jmp)];
 		*(uint64_t*)&kernel_injected_jmp[2] = kernel_function_address;
 
-		const uint64_t kernel_NtQueryInformationAtom = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress("ntoskrnl.exe"), "NtQueryInformationAtom");
+		const uint64_t kernel_NtQueryInformationAtom = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress(HIDETXT("ntoskrnl.exe")), HIDETXT("NtQueryInformationAtom"));
 		if (!kernel_NtQueryInformationAtom)
 		{
 			//TRACE("[-] Failed to get export ntoskrnl.NtQueryInformationAtom");

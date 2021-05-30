@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <memory>
 #include <array>
+#include "histr.h"
 
 static void trace(const char* fmt, ...) {
 	static std::unique_ptr<std::array<char, 0x1000>> buf;
@@ -25,3 +26,5 @@ static void trace(const char* fmt, ...) {
 #else
 #	define TRACE
 #endif
+
+#define HIDETXT(x) HISTR::nextA(HISTRA(x))
