@@ -546,7 +546,7 @@ bool intel_driver::ClearPiDDBCacheTable(HANDLE device_handle) { //PiDDBCacheTabl
 		return false;
 	}
 
-	printf("[+] Found Table Entry = %p\n", pFoundEntry);
+	TRACE("[+] Found Table Entry = %p", pFoundEntry);
 
 	if (!WriteMemory(device_handle, (uintptr_t)prev + (offsetof(struct _LIST_ENTRY, Flink)), &next, sizeof(_LIST_ENTRY*))) {
 		TRACE("[-] Can't set next entry");
