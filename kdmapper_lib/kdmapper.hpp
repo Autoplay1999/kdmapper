@@ -1,4 +1,20 @@
 #pragma once
+#ifndef _KDMAPPER_EXPORTS
+#	ifdef _WIN64
+#		ifdef _DEBUG
+#			pragma comment(lib, "kdmapper64d.lib")
+#		else
+#			pragma comment(lib, "kdmapper64.lib")
+#		endif
+#	else
+#		ifdef _DEBUG
+#			pragma comment(lib, "kdmapper32d.lib")
+#		else
+#			pragma comment(lib, "kdmapper32.lib")
+#		endif
+#	endif
+#endif
+
 #include <Windows.h>
 #include <stdint.h>
 #include <iostream>

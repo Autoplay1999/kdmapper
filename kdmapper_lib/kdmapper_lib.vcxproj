@@ -72,33 +72,33 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>kdmapper</TargetName>
+    <TargetName>kdmapper32d</TargetName>
     <IntDir>temp\$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)lib\x86\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)lib\x86\$(Configuration)\\$(TargetName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>kdmapper</TargetName>
+    <TargetName>kdmapper32</TargetName>
     <IntDir>temp\$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)lib\x86\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)lib\x86\$(Configuration)\\$(TargetName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>kdmapper</TargetName>
+    <TargetName>kdmapper64d</TargetName>
     <IntDir>temp\$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)lib\x64\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)lib\x64\$(Configuration)\$(TargetName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>kdmapper</TargetName>
+    <TargetName>kdmapper64</TargetName>
     <IntDir>temp\$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)lib\x64\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)lib\x64\$(Configuration)\$(TargetName)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_KDMAPPER_EXPORTS;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -110,13 +110,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)include\$(TargetName)" md "$(SolutionDir)include\$(TargetName)"
-copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.hpp" 
-copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" 
-copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\$(TargetName)\portable_executable.hpp" 
-copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\$(TargetName)\utils.hpp" 
-copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\$(TargetName)\nt.hpp" 
-copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.hpp" </Command>
+      <Command>if not exist "$(SolutionDir)include" md "$(SolutionDir)include"
+copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\intel_driver.hpp" 
+copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\kdmapper.hpp" 
+copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\portable_executable.hpp" 
+copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\utils.hpp" 
+copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\nt.hpp" 
+copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\service.hpp" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -125,7 +125,7 @@ copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_KDMAPPER_EXPORTS;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -139,20 +139,20 @@ copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)include\$(TargetName)" md "$(SolutionDir)include\$(TargetName)"
-copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.hpp" 
-copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" 
-copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\$(TargetName)\portable_executable.hpp" 
-copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\$(TargetName)\utils.hpp" 
-copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\$(TargetName)\nt.hpp" 
-copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.hpp" </Command>
+      <Command>if not exist "$(SolutionDir)include" md "$(SolutionDir)include"
+copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\intel_driver.hpp" 
+copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\kdmapper.hpp" 
+copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\portable_executable.hpp" 
+copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\utils.hpp" 
+copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\nt.hpp" 
+copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\service.hpp" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_KDMAPPER_EXPORTS;_CRT_SECURE_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -164,13 +164,13 @@ copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)include\$(TargetName)" md "$(SolutionDir)include\$(TargetName)"
-copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.hpp" 
-copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" 
-copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\$(TargetName)\portable_executable.hpp" 
-copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\$(TargetName)\utils.hpp" 
-copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\$(TargetName)\nt.hpp" 
-copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.hpp" </Command>
+      <Command>if not exist "$(SolutionDir)include" md "$(SolutionDir)include"
+copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\intel_driver.hpp" 
+copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\kdmapper.hpp" 
+copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\portable_executable.hpp" 
+copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\utils.hpp" 
+copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\nt.hpp" 
+copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\service.hpp" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -179,7 +179,7 @@ copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_KDMAPPER_EXPORTS;_CRT_SECURE_NO_WARNINGS;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -193,13 +193,13 @@ copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)include\$(TargetName)" md "$(SolutionDir)include\$(TargetName)"
-copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\$(TargetName)\intel_driver.hpp" 
-copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\$(TargetName)\kdmapper.hpp" 
-copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\$(TargetName)\portable_executable.hpp" 
-copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\$(TargetName)\utils.hpp" 
-copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\$(TargetName)\nt.hpp" 
-copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.hpp" </Command>
+      <Command>if not exist "$(SolutionDir)include" md "$(SolutionDir)include"
+copy /Y "$(ProjectDir)intel_driver.hpp" "$(SolutionDir)include\intel_driver.hpp" 
+copy /Y "$(ProjectDir)kdmapper.hpp" "$(SolutionDir)include\kdmapper.hpp" 
+copy /Y "$(ProjectDir)portable_executable.hpp" "$(SolutionDir)include\portable_executable.hpp" 
+copy /Y "$(ProjectDir)utils.hpp" "$(SolutionDir)include\utils.hpp" 
+copy /Y "$(ProjectDir)nt.hpp" "$(SolutionDir)include\nt.hpp" 
+copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\service.hpp" </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -207,6 +207,7 @@ copy /Y "$(ProjectDir)service.hpp" "$(SolutionDir)include\$(TargetName)\service.
     <ClInclude Include="intel_driver.hpp" />
     <ClInclude Include="intel_driver_resource.hpp" />
     <ClInclude Include="kdmapper.hpp" />
+    <ClInclude Include="nt.hpp" />
     <ClInclude Include="portable_executable.hpp" />
     <ClInclude Include="service.hpp" />
     <ClInclude Include="utils.hpp" />

@@ -1,6 +1,8 @@
 #pragma once
 #include <Windows.h>
-#include <winternl.h>
+#ifndef NT_SUCCESS
+#	include <winternl.h>
+#endif
 #pragma comment(lib, "ntdll.lib")
 
 #ifndef STATUS_INFO_LENGTH_MISMATCH
